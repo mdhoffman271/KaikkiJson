@@ -27,15 +27,15 @@ def download_kaikki(force=False, verbose=True) -> None:
             log(f'Size: {content_length / (2 ** 30):.2f}GB')
         except:
             content_length = 0
-        chunk_size = 2 ** 20
         bytes_read = 0
         next_landmark = 0
+        log()
         with open(file_path, 'wb') as file:
-            for chunk in response.iter_content(chunk_size=chunk_size):
+            for chunk in response.iter_content(chunk_size=config.chunk_size):
                 if content_length > 0:
                     progress = int(100.0 * bytes_read / content_length)
                     if progress >= next_landmark:
-                        log(f' > {progress}% ...', end='\33[2K\r')
+                        log(f'\33[F\33[2K > {progress}% ...')
                         next_landmark = progress + 1
                 if chunk:
                     file.write(chunk)
